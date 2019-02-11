@@ -1,0 +1,5 @@
+browser: firefox
+file_config:
+  name: C:/Users/schaf/Desktop/mygrades.csv
+  overwrite: 'true'
+search_terms: ''
