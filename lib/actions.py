@@ -3,6 +3,7 @@ import os
 
 from .dojo_requests import DojoRequests
 from .grading_page import GradingPage
+from .belt_scripts import fetch_students
 
 
 def get_grading_page(session, search_term='', page_num=1, page_size=100, include_graded='true'):
@@ -41,3 +42,8 @@ def save_grades(filename, search_term=''):
 
     create_csv(page.table_headers, data, filename=filename)
 
+
+def save_belts(filename, site_name):
+    students = fetch_students(site_name)
+    headers = students[0].keys()
+    create_csv(headers, students, filename)
