@@ -3,3 +3,4 @@ requests-html
 PyQt5-sip
 PyQt5
 pyyaml
+python-crontab

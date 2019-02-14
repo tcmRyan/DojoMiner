@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>309</height>
+    <height>342</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -470,6 +470,42 @@
     </property>
     <property name="readOnly">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="belts_btn">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>160</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Download Belts</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="site_lbl">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Site Name:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="site_ln">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>10</y>
+      <width>211</width>
+      <height>20</height>
+     </rect>
     </property>
    </widget>
   </widget>
