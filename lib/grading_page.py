@@ -3,6 +3,11 @@ DETAILS_COL = 6
 
 
 class GradingPage:
+    """
+    The Grading Page is a page object representation of the grading page in the dojo.
+    This means that you can access the elements of the GDP as if you were accessing the
+    properties of a class.
+    """
 
     def __init__(self, page):
         self.page = page
