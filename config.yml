@@ -1,5 +1,6 @@
-browser: chrome
+browser: 'chrome'
 file_config:
-  name: C:/Users/schaf/Desktop/mygrades.csv
+  name: ''
   overwrite: 'true'
+search_term: ''
 search_terms: ''

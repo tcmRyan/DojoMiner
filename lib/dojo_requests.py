@@ -8,7 +8,9 @@ SUPPORTED_BROWSERS = ['chrome', 'firefox']
 class DojoRequests:
     """
     Small wrapper around the requests library to make it easy to make calls to the
-    dojo/gdp api
+    dojo/gdp api.  DojoRequests automatically adds the cookies in for to make sure
+    the requests are authenticated.  For documentation just view the Pythons Requests
+    library.
     """
 
     def __init__(self):

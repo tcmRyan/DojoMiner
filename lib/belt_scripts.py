@@ -1,5 +1,5 @@
 from lib.dojo_requests import DojoRequests
-import csv
+import json
 
 requests = DojoRequests()
 
@@ -29,7 +29,10 @@ def fetch_students(site, page_size=10):
         'pageNum': 1,
         'pageSize': page_size
     }
-    page = requests.get(SEARCH.format(site=site), params=params).json()
+    try:
+        page = requests.get(SEARCH.format(site=site), params=params).json()
+    except json.JSONDecodeError:
+        raise EnvironmentError('Site name incorrect should be in format: cn-state-location, got: {}'.format(site))
     total_records = int(page['recordCount'])
     pages = int((total_records/page_size)) + 1
     data = []
