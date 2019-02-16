@@ -5,3 +5,5 @@ PyQt5
 pyyaml
 python-crontab
 pyinstaller
+pytest
+requests-file
