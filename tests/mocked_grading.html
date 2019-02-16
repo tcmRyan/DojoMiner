@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Games - Code Ninjas' Game Development Platform</title>
+    <link href="/Content/cncss?v=scMudMQ2BXFMY6nuffAIZDraP0FFS81P7ny2MRsIIvs1" rel="stylesheet"/>
+
+    <link href="/Content/themes/base/jquery-ui?v=kFoVJpUdwQWDifR2O7ZvJB4WkiYLkwf-0fPWMvcDiWk1" rel="stylesheet"/>
+
+    <script src="/bundles/modernizr?v=wBEWDufH_8Md-Pbioxomt90vm6tJN2Pyy9u9zHtWsPo1"></script>
+
+
+    <style>
+        .selected {
+            background-color: darkgray !important;
+        }
+
+        .games-table tr {
+            cursor: pointer;
+        }
+
+        .graded {
+            background-color: #e9e9e9;
+            font-weight: 100;
+        }
+
+        .pageLink {
+            cursor: pointer;
+        }
+
+        .fa-star {
+            cursor: pointer;
+        }
+    </style>
+
+    <link rel="icon" href="/images/codeninjas/favicon.png" type="image/png">
+    <script type='text/javascript'>
+        var appInsights = window.appInsights || function (config) {
+            function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } }
+            var t = { config: config }, u = document, e = window, o = 'script', s = u.createElement(o), i, f; for (s.src = config.url || '//az416426.vo.msecnd.net/scripts/a/ai.0.js', u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ['Event', 'Exception', 'Metric', 'PageView', 'Trace', 'Ajax']; i.length;) r('track' + i.pop()); return r('setAuthenticatedUserContext'), r('clearAuthenticatedUserContext'), config.disableExceptionTracking || (i = 'onerror', r('_' + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t['_' + i](config, r, u, e, o), s }), t
+        }({
+            instrumentationKey: '79e7c579-ed00-4567-a649-dff1e144262b'
+        });
+
+        window.appInsights = appInsights;
+        appInsights.trackPageView();
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-default padding-right-4 ">
+        <div class="container-fluid">
+
+            <div class="navbar-header pull-left">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="https://www.codeninjas.com" class="navbar-brand"><img src="/images/codeninjas/logo.png" height="35" /></a>
+            </div>
+
+                <div class="navbar-collapse collapse pull-left ">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/Treks">PATHS</a></li>
+                        <li><a href="/Teams">TEAMS</a></li>
+                            <li><a href="/Grading">GRADING</a></li>
+                    </ul>
+                </div>
+<form action="/Account/LogOff" class="navbar-right" id="logoutForm" method="post"><input name="__RequestVerificationToken" type="hidden" value="ueupNLSEteP0ztf1zvpweMabg0khNeb8186qGfzl12rIMQPp4ZD7RSqJkMbouZ9dmo6Iq1HiF5Vm6k0HAUCCegNIBSIwP59tPfawt-SLcdq5c6LOurcYLpNJA9_MNOKHX7KMamOJBYHAaYF9txzAcw2" />                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#"> <i class="fa fa-user"></i> <span class="__cf_email__" data-cfemail="c8bab1a9a6e6bbaba0a9aeaeadba88aba7acada6a1a6a2a9bbe6aba7a5">[email&#160;protected]</span>_cn</a>
+                        </li>
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                    </ul>
+</form>        </div>
+    </div>
+    <div class="body-content">
+        <div class="container-fluid padding-left-5 padding-right-5 browser-warning" style="display: none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-center" style="color: red;">WARNING: Your browser is not supported.  Chrome is required for games to be built and run properly.</p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid padding-left-5 padding-right-5">
+
+
+
+
+
+<div>
+<form action="/Grading" class="form-inline" method="get">        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group" style="padding-top: 5px;">
+                    <input checked="checked" data-val="true" data-val-required="The Boolean field is required." id="IncludeGraded" name="IncludeGraded" type="checkbox" value="true" /><input name="IncludeGraded" type="hidden" value="false" />
+                    <label for="IncludeGraded">Graded</label>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label for="search">Search</label>
+                    <input type="text" class="form-control" id="searchTerm" name="searchTerm" value="" />
+                    <input type="button" class="btn btn-primary" value="Go" id="submitSearch" />
+                </div>
+            </div>
+        </div>
+</form>
+</div>
+
+<div>
+    <ul class="pagination">
+            <li class="active">
+                <a class="pageLink" data-pagenum="1">1</a>
+            </li>
+            <li class="">
+                <a class="pageLink" data-pagenum="2">2</a>
+            </li>
+            <li class="">
+                <a class="pageLink" data-pagenum="3">3</a>
+            </li>
+            <li class="">
+                <a class="pageLink" data-pagenum="4">4</a>
+            </li>
+    </ul>
+</div>
+
+<div style="background-color: white; padding: 5px;">
+    <table class="table table-hover games-table">
+        <thead>
+            <tr>
+                <th><strong>Student</strong></th>
+                <th>
+                    <strong>Center</strong>
+                </th>
+                <th>
+                    <strong>Belt - Game</strong>
+                </th>
+                <th>
+                    <strong>Completed Date</strong>
+                </th>
+                <th>
+                    <strong>Graded Date</strong>
+                </th>
+                <th>
+                    <strong>Stars Earned</strong>
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr class="graded" data-uts="f4TGigNsjf">
+                    <td>Matt Damon</td>
+                    <td>
+                        Wellesley
+                    </td>
+                    <td>
+                        White Belt v2 - The Cat and You!
+                    </td>
+                    <td>
+                        12/1/2018
+                    </td>
+                    <td>
+                        <span class="col-graded">
+                            12/1/2018 by Jim Mattis
+                        </span>
+
+                    </td>
+                    <td>
+                        <div class="col-stars-earned">
+                                <span>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/Grading/Details/f4Tswersjf" class="btn btn-primary btn-sm">Play &amp; Grade</a>
+                    </td>
+                </tr>
+                <tr class="graded" data-uts="eYLfBZ8Tm2">
+                    <td>John Goodman</td>
+                    <td>
+                        Wellesley
+                    </td>
+                    <td>
+                        White Belt v2 - The Cat and You!
+                    </td>
+                    <td>
+                        12/1/2018
+                    </td>
+                    <td>
+                        <span class="col-graded">
+                            12/1/2018 by Condoleza Rice
+                        </span>
+
+                    </td>
+                    <td>
+                        <div class="col-stars-earned">
+                                <span>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/Grading/Details/eYLsdf4Tm2" class="btn btn-primary btn-sm">Play &amp; Grade</a>
+                    </td>
+                </tr>
+                <tr class="graded" data-uts="rKhTcw2Xrc">
+                    <td>Jet Lee</td>
+                    <td>
+                        Wellesley
+                    </td>
+                    <td>
+                        White Belt v2 - The Cat and You!
+                    </td>
+                    <td>
+                        12/1/2018
+                    </td>
+                    <td>
+                        <span class="col-graded">
+                            12/1/2018 by Hugo Boss
+                        </span>
+
+                    </td>
+                    <td>
+                        <div class="col-stars-earned">
+                                <span>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/Grading/Details/rKhsdf2Xrc" class="btn btn-primary btn-sm">Play &amp; Grade</a>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+</div>
+<br />
+<div id="grading-section" style="background-color: white;">
+
+</div>
+
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2019 - Code Ninjas LLC</p>
+    </footer>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/bundles/jquery?v=JL596WEzEYSLK79KRL4It4N63VXpRlW4A824KHlhVLc1"></script>
+
+    <script src="/bundles/bootstrap?v=heWj5PfyYUIh4c-bTsOEbg2OqOMNEi9Fn_ezyauQU5E1"></script>
+
+    <script src="/bundles/jquery-ui?v=yqCVigxSu97_s_vulMWzX97PVmpAp1RUApV3df4vSeo1"></script>
+
+    <script src="/bundles/knockout?v=YpyjXfkiqb1OjCsU2k6sxn_U2dUpJMR_ktDPoKiJVr81"></script>
+
+
+    <script>
+        var currPage = 1;
+    </script>
+    <script src="/bundles/gamesearch?v=dgZNIrhA3F8h4uJfPAasdfasdffsIhbdU0F0vwk1"></script>
+
+
+    <script>
+        $(function () {
+            if (navigator.userAgent.indexOf('Chrome') === -1 ||
+                (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('Edge') !== -1)) {
+                $('.browser-warning').toggle();
+            }
+        });
+    </script>
+</body>
+</html>
