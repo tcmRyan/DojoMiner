@@ -7,3 +7,6 @@ python-crontab
 pyinstaller
 pytest
 requests-file
+apscheduler
+XlsxWriter
+dateutil
