@@ -17,4 +17,5 @@ if __name__ == '__main__':
 
     sys.excepthook = exception_hook
     window = MainWindow()
+
     sys.exit(app.exec_())

@@ -1,8 +1,8 @@
 from PyQt5 import uic, QtCore
 from PyQt5.QtWidgets import *
 from lib.dojo_requests import SUPPORTED_BROWSERS
-from lib.actions import save_grades, save_belts
-from setting import config, save_settings
+from lib.actions import save_grades, save_belts, save_usage
+from setting import config, save_settings, SAVED_BELTS_KEY, SAVED_GRADES_KEY, SAVED_USAGES_KEY
 
 
 class MainWindow(QMainWindow):
@@ -18,27 +18,38 @@ class MainWindow(QMainWindow):
         # where the references to the widgets are created.
         uic.loadUi('gui.ui', self)
 
-        # Save Path Text
-        self.save_path_ln.setText(config['file_config']['name'])
+        self.site_ln.setText(config['site_name'])
 
-        # Save Path Button
-        self.save_path_btn.clicked.connect(self.file_saveas)
+        # Grades Save Path
+        self.grades_save_path_ln.setText(config['file_config'].get(SAVED_GRADES_KEY, ''))
+        self.grades_save_path_btn.clicked.connect(self.grades_save_as)
+
+        # Belts Save Path
+        self.belts_save_path_ln.setText(config['file_config'].get(SAVED_BELTS_KEY, ''))
+        self.belts_save_path_btn.clicked.connect(self.belts_save_as)
+
+        # Usages Save Path
+        self.usages_save_path_ln.setText(config['file_config'].get(SAVED_USAGES_KEY, ''))
+        self.usages_save_path_btn.clicked.connect(self.usages_save_as)
 
         # Browser Support Checkbox
         self.browser_cb.addItems(SUPPORTED_BROWSERS)
         self.browser_cb.setCurrentIndex(SUPPORTED_BROWSERS.index(config['browser']))
         self.browser_cb.currentIndexChanged.connect(self.browser_change)
 
-        # Overwrite Button
-        checked = True if config['file_config']['overwrite'] == 'true' else False
-        self.overwrite_chbx.setChecked(checked)
-        self.overwrite_chbx.stateChanged.connect(self.overwrite_box)
+        # Usage Excel Checkbox
+        checked = True if config['file_config']['excel_format'] == 'true' else False
+        self.excel_chbx.setChecked(checked)
+        self.excel_chbx.stateChanged.connect(self.excel_box)
 
         # Download Grades
         self.download_grades_btn.clicked.connect(self.save_grades)
 
         # Download Belts
         self.belts_btn.clicked.connect(self.save_belts)
+
+        # Download Usages
+        self.usages_btn.clicked.connect(self.save_usage)
 
         self.show()
 
@@ -58,7 +69,7 @@ class MainWindow(QMainWindow):
             self.editor.setText(text)
             self.update_title()
 
-    def file_saveas(self):
+    def file_saveas(self, name):
         path, _ = QFileDialog.getSaveFileName(self, "Save file", "",
                                               "CSV documents (*.csv)")
 
@@ -74,14 +85,25 @@ class MainWindow(QMainWindow):
             self.dialog_critical(str(e))
 
         else:
-            config['file_config']['name'] = path
-            self.save_path_ln.setText(path)
+            config['file_config'][name] = path
             return path
 
+    def grades_save_as(self):
+        path = self.file_saveas(SAVED_GRADES_KEY)
+        self.grades_save_path_ln.setText(path)
+
+    def belts_save_as(self):
+        path = self.file_saveas(SAVED_BELTS_KEY)
+        self.belts_save_path_ln.setText(path)
+
+    def usages_save_as(self):
+        path = self.file_saveas(SAVED_USAGES_KEY)
+        self.usages_save_path_ln.setText(path)
+
     def save_grades(self):
-        file_name = config['file_config'].get('name', None)
+        file_name = config['file_config'].get(SAVED_GRADES_KEY, None)
         if not len(file_name) > 0:
-            file_name = self.file_saveas()
+            file_name = self.file_saveas(SAVED_GRADES_KEY)
             if not file_name:
                 return
         search_term = self.search_ln.text()
@@ -89,24 +111,46 @@ class MainWindow(QMainWindow):
         try:
             self.status_ln.setText("Downloading Grades")
             self.status_ln.repaint()
+            save_settings()
             save_grades(file_name, search_term)
             self.status_ln.setText("Done")
         except EnvironmentError:
             self.status_ln.setText("Error: Browser not logged in")
 
     def save_belts(self):
-        file_name = config['file_config'].get('name', None)
+        file_name = config['file_config'].get(SAVED_BELTS_KEY, None)
         if not len(file_name) > 0:
-            file_name = self.file_saveas()
+            file_name = self.file_saveas(SAVED_BELTS_KEY)
             if not file_name:
                 return
         site_name = self.site_ln.text()
         if not site_name:
             self.status_ln.setText("Error: Need site name to get belt data")
         try:
+            config['site_name'] = site_name
             self.status_ln.setText("Downloading Belts")
             self.status_ln.repaint()
             save_belts(file_name, site_name)
+            self.status_ln.setText("Done")
+        except EnvironmentError:
+            self.status_ln.setText("Error: Browser not logged in")
+
+    def save_usage(self):
+        file_name = config['file_config'].get(SAVED_USAGES_KEY, None)
+        if not len(file_name) > 0:
+            file_name = self.file_saveas(SAVED_USAGES_KEY)
+            if not file_name:
+                return
+        site_name = self.site_ln.text()
+        if 'ex:' in site_name or not site_name:
+            self.status_ln.setText("Error: Need site name to get usage data")
+            return
+        try:
+            config['site_name'] = site_name
+            self.status_ln.setText("Downloading Usage")
+            self.status_ln.repaint()
+            excel = True if config['file_config'].get('excel_format') == 'true' else False
+            save_usage(file_name, site_name, excel_fmt=excel)
             self.status_ln.setText("Done")
         except EnvironmentError:
             self.status_ln.setText("Error: Browser not logged in")
@@ -143,7 +187,7 @@ class MainWindow(QMainWindow):
         else:
             event.ignore()
 
-    def overwrite_box(self, state):
+    def excel_box(self, state):
         if state == QtCore.Qt.Checked:
             config['file_config']['overwrite'] = 'true'
         else:

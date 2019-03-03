@@ -1,6 +1,5 @@
-browser: 'chrome'
+browser: chrome
 file_config:
-  name: ''
-  overwrite: 'true'
+  excel_format: 'true'
 search_term: ''
-search_terms: ''
+site_name: 'ex: cn-tx-pearland'
