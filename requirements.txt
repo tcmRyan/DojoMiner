@@ -9,4 +9,4 @@ pytest
 requests-file
 apscheduler
 XlsxWriter
-dateutil
+python-dateutil
