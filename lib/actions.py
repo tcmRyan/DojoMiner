@@ -15,6 +15,7 @@ def get_grading_page(session, search_term='', page_num=1, page_size=100, include
         'pageNum': page_num,
         'pageSize': page_size,
         'includeGraded': include_graded,
+        'slug': 'undefined',
     }
     return session.get(url, params=params)
 
@@ -33,9 +34,11 @@ def create_csv(headers, data, filename='grades.csv'):
 
 def save_grades(filename, search_term=''):
     session = DojoRequests()
-    page = GradingPage(get_grading_page(session, search_term=''))
+    page = GradingPage(get_grading_page(session, search_term=search_term))
     data = []
+    print(page.page_count)
     for page_number in range(page.page_count):
+        print(f'Processing pn: {page_number}')
         page_number += 1  # Offset for human counting
         page = GradingPage(get_grading_page(
             session,
@@ -43,6 +46,7 @@ def save_grades(filename, search_term=''):
             search_term=search_term)
         )
         data.extend(page.grades)
+        
 
     create_csv(page.table_headers, data, filename=filename)
 

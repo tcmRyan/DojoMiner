@@ -142,6 +142,7 @@ class MainWindow(QMainWindow):
             if not file_name:
                 return
         site_name = self.site_ln.text()
+        
         if 'ex:' in site_name or not site_name:
             self.status_ln.setText("Error: Need site name to get usage data")
             return
