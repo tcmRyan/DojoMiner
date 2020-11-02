@@ -59,7 +59,7 @@ def get_get_ninjas_usage(site_name):
     ninjas = fetch_students(site_name)
     master_report = []
     for ninja_id, customer_id in ninjas:
-        ninja = get_ninja_info(ninja_id, site_name)
+        ninja = get_ninja_info(ninja_id, customer_id, site_name)
         if not ninja:
             continue
         usage = get_ninja_usage(ninja_id, site_name)
@@ -68,8 +68,7 @@ def get_get_ninjas_usage(site_name):
 
 
 def usage_to_dict(ninja, usage):
-    name = ninja['First Name'] + ' ' + ninja['Last Name']
-    print(name)
+    name = ninja['name']
     row = OrderedDict()
     usage.sort(key=lambda w: w['days'][0]['dayDate'])
     for week in usage:
@@ -127,6 +126,7 @@ def fetch_students(site, page_size=10):
         page = requests.get(SEARCH.format(site=site), params=params).json()
     except json.JSONDecodeError:
         raise EnvironmentError('Site name incorrect should be in format: cn-state-location, got: {}'.format(site))
+    print(page)
     total_records = int(page['recordCount'])
     pages = int((total_records/page_size)) + 1
 
@@ -232,7 +232,6 @@ def get_ninja_usage(guid, site_name):
 
     return usage
 
-@staticmethod
 def clean_usage(usage):
     """
     Remove Duplicate weeks based on the start day of the week
